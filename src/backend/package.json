@@ -1,0 +1,17 @@
+{
+  "name": "octave-backend",
+  "version": "1.0.0",
+  "description": "Backend server for Octave",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vaidik",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "googleapis": "^126.0.1"
+  }
+}

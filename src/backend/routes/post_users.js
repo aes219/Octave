@@ -1,7 +1,7 @@
 require('dotenv').config()
 const { google } = require('googleapis');
 const sheets = google.sheets({ version: 'v4' })
-const creds = './credentials'
+const creds = './credentials.json'
 
 module.exports = {
     route: "users/:email/:password",
@@ -18,14 +18,13 @@ module.exports = {
         const spreadsheetId = process.env.DATABASE_ID
         const range = 'A:Z'
 
-        await sheets.spreadsheets.values.append({
+        const response = sheets.spreadsheets.values.append({
             auth,
             spreadsheetId,
             range,
             valueInputOption: 'USER_ENTERED',
             resource,
         })
-            .then(res.send('Done'))
-            ;
+        res.send(response.data)
     }
 }

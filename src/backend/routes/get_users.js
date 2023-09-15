@@ -15,10 +15,18 @@ module.exports = {
                     });
                     return obj;
                 });
-                res.send(Data);
+                res.status(200).json({
+                    status: 200,
+                    message: "OK",
+                    value: Data
+                });
             })
-            .catch((error) => {
-                console.log(error);
+            .catch((e) => {
+                console.log(e)
+                res.status(500).json({
+                    status: 500,
+                    message: "Internal Server Error"
+                })
             })
     }
 }

@@ -7,25 +7,33 @@ module.exports = {
     route: "users",
     method: 'POST',
     run: async (req, res) => {
-        const { email, password } = req.query
-        const auth = await google.auth.getClient({
-            keyFile: creds,
-            scopes: ['https://www.googleapis.com/auth/spreadsheets']
-        });
+        try {
+            const { email, password } = req.query
+            const auth = await google.auth.getClient({
+                keyFile: creds,
+                scopes: ['https://www.googleapis.com/auth/spreadsheets']
+            });
 
-        const resource = {
-            values: [[email, password]],
-        };
-        const spreadsheetId = process.env.DATABASE_ID
-        const range = 'A:Z'
+            const resource = {
+                values: [[email, password]],
+            };
+            const spreadsheetId = process.env.DATABASE_ID
+            const range = 'A:Z'
 
-        const response = sheets.spreadsheets.values.append({
-            auth,
-            spreadsheetId,
-            range,
-            valueInputOption: 'USER_ENTERED',
-            resource,
-        })
-        res.status(200).send(response.data)
+            const response = sheets.spreadsheets.values.append({
+                auth,
+                spreadsheetId,
+                range,
+                valueInputOption: 'USER_ENTERED',
+                resource,
+            })
+            res.status(200).send(response.data)
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({
+                status: 500,
+                message: "Internal Server Error"
+            })
+        }
     }
 }

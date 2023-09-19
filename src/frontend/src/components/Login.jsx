@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import axios from 'axios'
+import { useState } from 'react'
 import { Hero, Card, Form, Input, Link, Button } from 'react-daisyui'
-const api = `https://sheetdb.io/api/v1/hm4a4crnu81v7`;
+const api = `http://localhost:8000`;
 function Login() {
 
     const [email, setEmail] = useState('')
@@ -12,12 +13,10 @@ function Login() {
     const [cardTitle, setCardTitle] = useState('')
 
     async function checkUser(email, password) {
-        const res = await fetch(`${api}/search?email=${email}&password=${password}`, {
-            method: 'GET'
-        })
-        const data = await res.json();
-        let userEmail = data.some(user => user.email === email);
-        let userPass = data.some(user => user.password === password);
+        const response = await axios.get(`${api}/hash?string=${password}`)
+        const res = await axios.get(`${api}/search?email=${email}`)
+        let userEmail = res.data[0].email === email;
+        let userPass = res.data[0].password === response.data;
         if (userEmail && userPass) return true
     }
 
@@ -75,7 +74,7 @@ function Login() {
                                 <Form.Label title={emailLabel} />
                                 <Input
                                     type="email"
-                                    placeholder="me@example.com"
+                                    placeholder="hello@example.com"
                                     className={`input-bordered ${(emailExists) ? `input-error` : ``}`}
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}

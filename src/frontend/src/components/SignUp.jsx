@@ -1,6 +1,7 @@
+import axios from 'axios'
 import { useState } from 'react'
 import { Hero, Card, Form, Input, Link, Button } from 'react-daisyui'
-const api = `https://sheetdb.io/api/v1/hm4a4crnu81v7`;
+const api = `http://localhost:8000`;
 
 function SignUp() {
     const [email, setEmail] = useState('')
@@ -11,24 +12,14 @@ function SignUp() {
     const [passExists, setPassExists] = useState(false)
 
     async function createAccount(email, password) {
-        await fetch(`${api}`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(
-                [
-                    {
-                        'email': email,
-                        'password': password,
-                    }
-                ]
-            )
-        })
-            .then((res) => {
-                console.log(res)
-                window.location = '/dash'
+        axios.get(`${api}/hash?string=${password}`)
+            .then((response) => {
+                const hashedPass = response.data
+                axios.post(`${api}/users?email=${email}&password=${hashedPass}`)
+                    .then((res) => {
+                        console.log(res)
+                        window.location = '/dash'
+                    })
             })
     }
     const checkExists = async (email) => {
@@ -89,14 +80,14 @@ function SignUp() {
                         <Card.Body>
                             <Form>
                                 <Form.Label title={emailLabel} />
-                                    <Input
-                                        type="email"
-                                        placeholder="hello@example.com"
-                                        className={`input-bordered ${emailExists ? 'input-error' : ''}`}
-                                        value={email}
-                                        onChange={e => setEmail(e.target.value)}
-                                        name='email'
-                                    />
+                                <Input
+                                    type="email"
+                                    placeholder="hello@example.com"
+                                    className={`input-bordered ${emailExists ? 'input-error' : ''}`}
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    name='email'
+                                />
                             </Form>
                             <Form>
                                 <Form.Label title={passLabel} />

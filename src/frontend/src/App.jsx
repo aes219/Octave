@@ -9,13 +9,13 @@ import Dashboard from './pages/Dashboard';
 function App() {
   return (
     <div className="App" style={{ fontFamily: 'Montserrat' }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/dash' element={<Dashboard />} />
-        </Routes>
-      </BrowserRouter>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Login />} />
+            <Route path='/signup' element={<SignUp />} />
+            <Route path='/dash' element={<Dashboard />} />
+          </Routes>
+        </BrowserRouter>
     </div>
   );
 }

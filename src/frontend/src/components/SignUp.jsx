@@ -28,9 +28,6 @@ function SignUp() {
             .then((response) => {
                 const hashedPass = response.data
                 axios.post(`${api}/users?email=${email}&password=${hashedPass}`)
-                    .then((res) => {
-                        console.log(res)
-                    })
             })
     }
     async function sendOTP() {
@@ -41,9 +38,6 @@ function SignUp() {
         setOtpcomponent('block')
 
         axios.post(`${api}/mail?recipient=rungtavaidik@gmail.com&subject=One+Time+Password&msg=${otpCode}`)
-            .then(() => {
-                console.log(otpCode)
-            })
     }
 
     async function checkOTP() {

@@ -1,5 +1,4 @@
 require('dotenv').config()
-
 const nodemailer = require('nodemailer')
 
 module.exports = {
@@ -9,17 +8,16 @@ module.exports = {
     const { recipient, subject, msg } = req.query
 
     let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      host: 'smtp-mail.outlook.com',
+      port: 587,
+      secure: false,
       auth: {
-        type: "OAuth2",
-        user: "rungtavaidik@gmail.com",
-        accessToken: process.env.ACCESS_TOKEN,
-      },
+        user: process.env.EMAIL_ID,
+        pass: process.env.EMAIL_PASSWORD
+      }
     })
     transporter.sendMail({
-      from: "rungtavaidik@gmail.com",
+      from: process.env.EMAIL_ID,
       to: recipient,
       subject: subject,
       text: msg,
@@ -28,7 +26,7 @@ module.exports = {
         res
           .status(200)
           .json({
-            from: "rungtavaidik@gmail.com",
+            from: process.env.EMAIL_ID,
             to: recipient,
             subject: subject,
             text: msg,

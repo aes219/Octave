@@ -34,7 +34,7 @@ module.exports = (app) => {
                 break;
 
             default:
-                console.log(`Invalid Method`)
+                console.log(`${chalk.yellow(`[ BACKEND ]`)} ${chalk.red(`[ ERROR ]`)} ${chalk.redBright(`Invalid Method at /${router.route}`)}`)
                 break;
         }
     })

@@ -75,17 +75,17 @@ function Login() {
     }
 
     const changePassword = async () => {
-        if(!newpass)
+        if (!newpass)
             setNewpassexists(true)
         else {
             axios.get(`${api}/hash?string=${newpass}`)
-            .then((r) => {
-                axios.put(`${api}/users/update?email=${email}&key=password&value=${r.data}`)
-                .then(
-                    window.location = '/'
-                )
-            })
-        }   
+                .then((r) => {
+                    axios.put(`${api}/users/update?email=${email}&key=password&value=${r.data}`)
+                        .then(
+                            window.location = '/'
+                        )
+                })
+        }
     }
 
     const handleSubmit = async (e) => {

@@ -21,7 +21,7 @@ function Dashboard() {
             setDashComponent('block')
             setProfileComponent('none')
         }
-    })
+    }, [])
 
     const accountSetup = () => {
         if (!name && !bio) {

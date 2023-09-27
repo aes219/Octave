@@ -1,3 +1,5 @@
+import { Hero, Card, Form, Input, Link, Button } from 'react-daisyui'
+
 function SignupBox({ display, eLabel, eExists, email, eChange, pLabel, pExists, password, pChange, click }) {
     return (
         <>

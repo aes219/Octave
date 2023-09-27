@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useState } from 'react'
-import { Hero, Card, Form, Input, Link, Button } from 'react-daisyui'
 import SecurityCode from '../components/SecurityCode';
 import SignupBox from '../components/SignupBox';
 const api = `http://localhost:8000`;

@@ -38,7 +38,7 @@ function SignUp() {
         setSignupcomponent('none')
         setOtpcomponent('block')
 
-        axios.post(`${api}/mail?recipient=${email}&subject=One+Time+Password&msg=${otpCode}`)
+        axios.post(`${api}/mail?recipient=${email}&subject=Security+Code&msg=Here+is+your+4+digit+security+code+to+create+an+Octave+Account:+<strong>${otpCode}</strong>`)
     }
 
     async function checkOTP() {

@@ -46,6 +46,7 @@ function SignUp() {
         console.log(`secret :-\n${secret}`)
         if (parseInt(otp) === secret) {
             createAccount(email, pass)
+                .then(window.localStorage.setItem('e', email))
                 .then(window.location.href = '/')
         }
         else

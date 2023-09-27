@@ -35,11 +35,11 @@ function Dashboard() {
             setNameExists(true)
         } else {
             axios.post(`${api}/users/profiles?email=${window.localStorage.getItem('e')}&nick=${name}&bio=${bio}`)
-            .then(
-                window.localStorage.removeItem('e'),
-                setProfileComponent('none'),
-                setDashComponent('block')
-            )
+                .then(
+                    window.localStorage.removeItem('e'),
+                    setProfileComponent('none'),
+                    setDashComponent('block')
+                )
         }
 
     }
@@ -80,7 +80,7 @@ function Dashboard() {
                     </Hero.Content>
                 </Hero>
             </div>
-            <div style={{display: dashcomponent}}>
+            <div style={{ display: dashcomponent }}>
                 <Hero>
                     <Hero.Content>
                         <h1 className="text-9xl font-bold">Dashboard</h1>

@@ -20,7 +20,7 @@ module.exports = {
       from: `Octave <${process.env.EMAIL_ID}>`,
       to: recipient,
       subject: subject,
-      text: msg,
+      html: msg,
     })
       .then(
         res

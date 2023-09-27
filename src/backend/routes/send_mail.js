@@ -17,7 +17,7 @@ module.exports = {
       }
     })
     transporter.sendMail({
-      from: process.env.EMAIL_ID,
+      from: `Octave <${process.env.EMAIL_ID}>`,
       to: recipient,
       subject: subject,
       text: msg,
@@ -26,7 +26,7 @@ module.exports = {
         res
           .status(200)
           .json({
-            from: process.env.EMAIL_ID,
+            from: `Octave <${process.env.EMAIL_ID}>`,
             to: recipient,
             subject: subject,
             text: msg,

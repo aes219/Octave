@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { useEffect } from "react";
 import { useState } from "react";
-import { Hero, Input, Card, Button, Textarea, Form } from "react-daisyui";
+import ProfileSetup from '../components/ProfileSetup';
+import Chats from '../components/Chats';
 const api = `http://localhost:8000`;
 
 function Dashboard() {
@@ -34,9 +35,11 @@ function Dashboard() {
             setBioExists(false)
             setNameExists(true)
         } else {
-            axios.post(`${api}/users/profiles?email=${window.localStorage.getItem('e')}&nick=${name}&bio=${bio}`)
+            const e = window.localStorage.getItem('e')
+            axios.post(`${api}/users/profiles?email=${e}&nick=${name}&bio=${bio}`)
                 .then(
                     window.localStorage.removeItem('e'),
+                    window.localStorage.setItem('mail', e),
                     setProfileComponent('none'),
                     setDashComponent('block')
                 )
@@ -45,47 +48,18 @@ function Dashboard() {
     }
     return (
         <>
-            <div id="profilecomponent" style={{ display: profilecomponent, margin: 80 }}>
-                <h1 align="center" className='text-3xl m-10'>
-                    <strong>
-                        Please finish your account setup
-                    </strong>
-                </h1>
-                <Hero>
-                    <Hero.Content className="flex-col lg:flex-row-reverse">
-                        <Card className="flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                            <Card.Body>
-                                <Form>
-                                    <Form.Label title="Nickname" />
-                                    <Input
-                                        type='text'
-                                        value={name}
-                                        onChange={e => setName(e.target.value)}
-                                        className={`input-bordered ${(nameExists) ? `` : `input-error`}`}
-                                    />
-                                    <Form.Label title="About Me" />
-                                    <Textarea
-                                        value={bio}
-                                        onChange={e => setBio(e.target.value)}
-                                        style={{
-                                            height: 150,
-                                            width: 300
-                                        }}
-                                        className={`input-bordered ${(bioExists) ? `` : `textarea-error`}`}
-                                    />
-                                </Form>
-                                <Button color='info' variant='outline' className='no-animation' onClick={accountSetup}>Done!</Button>
-                            </Card.Body>
-                        </Card>
-                    </Hero.Content>
-                </Hero>
-            </div>
+            <ProfileSetup
+                display={profilecomponent}
+                name={name}
+                nChange={e => setName(e.target.value)}
+                nExists={nameExists}
+                bio={bio}
+                bChange={e => setBio(e.target.value)}
+                bExists={bioExists}
+                click={accountSetup}
+            />
             <div style={{ display: dashcomponent }}>
-                <Hero>
-                    <Hero.Content>
-                        <h1 className="text-9xl font-bold">Dashboard</h1>
-                    </Hero.Content>
-                </Hero>
+                <Chats/>
             </div>
         </>
     )

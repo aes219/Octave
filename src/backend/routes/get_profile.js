@@ -1,11 +1,11 @@
 const axios = require('axios')
 
 module.exports = {
-    route: 'search',
+    route: 'users/profile',
     method: 'GET',
     run: async (req, res) => {
         const { email } = req.query;
-        axios.get(require('../api')('Users'))
+        axios.get(require('../api')('Profiles'))
             .then((response) => {
                 const [headerRow, ...rows] = response.data.values;
 
@@ -17,10 +17,14 @@ module.exports = {
                     return obj;
                 });
                 const result = Data.filter(user => user.email === email)
-                res.status(200).json(result)
+                res.status(200).json({
+                    status: 200,
+                    message: "OK",
+                    values: result
+                });
             })
             .catch((e) => {
-                console.log(e);
+                console.log(e)
                 res.status(500).json({
                     status: 500,
                     message: "Internal Server Error"

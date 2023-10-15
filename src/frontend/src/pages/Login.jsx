@@ -105,7 +105,10 @@ function Login() {
                 setPassExists(true)
                 setCardTitle('Incorrect Email or Password')
             }
-            else window.location = '/dash';
+            else {
+                window.localStorage.setItem('mail', email)
+                window.location = '/dash';
+            }
         }
     }
     return (

@@ -37,7 +37,7 @@ function SignupBox({ display, eLabel, eExists, email, eChange, pLabel, pExists, 
                                         name='password'
                                     />
                                     <label className='label'>
-                                        <Link href="/" className="label-text-alt" hover>
+                                        <Link href="/login" className="label-text-alt" hover>
                                             Already have an account? Login here →
                                         </Link>
                                     </label>

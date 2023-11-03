@@ -107,7 +107,7 @@ function Login() {
             }
             else {
                 window.localStorage.setItem('mail', email)
-                window.location = '/dash';
+                window.location = '/';
             }
         }
     }

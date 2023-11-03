@@ -6,6 +6,8 @@ import Sidebar from '../components/Sidebar';
 const api = `http://localhost:8000`;
 
 function Dashboard() {
+    if(!window.localStorage.getItem('mail'))
+        window.location = '/login'
     const [profilecomponent, setProfileComponent] = useState('')
     const [dashcomponent, setDashComponent] = useState('')
     const [name, setName] = useState('')

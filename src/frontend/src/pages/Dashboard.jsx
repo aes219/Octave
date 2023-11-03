@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect } from "react";
 import { useState } from "react";
 import ProfileSetup from '../components/ProfileSetup';
-import Chats from '../components/Chats';
+import Sidebar from '../components/Sidebar';
 const api = `http://localhost:8000`;
 
 function Dashboard() {
@@ -59,7 +59,7 @@ function Dashboard() {
                 click={accountSetup}
             />
             <div style={{ display: dashcomponent }}>
-                <Chats/>
+                <Sidebar/>
             </div>
         </>
     )

@@ -1,7 +1,7 @@
 module.exports = {
-    route: "nigga",
+    route: "test",
     method: 'GET',
     run: async(req, res) => {
-        res.send("Balls")
+        res.send("Hello World!");
     }
 }

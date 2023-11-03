@@ -3,7 +3,7 @@ import { Hero, Card, Form, Input, Button, Link } from 'react-daisyui'
 function LoginBox({ display, title, eLabel, eExists, email, eChange, pLabel, pExists, password, pChange, fpClick, click }) {
     return (
         <>
-            <div id='logincomponent' style={{ display: display }}>
+            <div id='logincomponent' style={{ display: display, margin: 70 }}>
                 <h1 align="center" className='text-3xl m-10'>
                     <strong>
                         Welcome back

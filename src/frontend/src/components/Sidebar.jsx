@@ -72,9 +72,6 @@ function Chats() {
                     </Menu.Item>
                 </Menu>
             } />
-            <div className='rounded-lg'>
-
-            </div>
         </>
     );
 }

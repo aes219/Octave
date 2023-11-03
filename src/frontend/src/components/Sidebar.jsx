@@ -49,6 +49,7 @@ function Chats() {
     return (
         <>
             <Drawer open={true} side={
+                <>
                 <Menu className="bg-base-200 rounded-sm text-lg h-full" style={{ width: 250 }}>
                     <Menu.Title className='text-xl' style={{ color: 'gray' }}>{nick}</Menu.Title>
                     <Menu.Item>
@@ -71,6 +72,7 @@ function Chats() {
                         {menuItems}
                     </Menu.Item>
                 </Menu>
+                </>
             } />
         </>
     );

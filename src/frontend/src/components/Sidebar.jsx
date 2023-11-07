@@ -9,10 +9,13 @@ function Chats() {
     const [nick, setNick] = useState('')
 
     async function fetchFriends() {
-        const response = await axios.get(`${api}/users/profile/friends?email=${window.localStorage.getItem('mail')}`);
-        const frnds = response.data.values;
-        if (!frnds) setFriends(['Start'])
-        setFriends(frnds);
+        if(!window.localStorage.getItem('e')) {
+            const response = await axios.get(`${api}/users/profile/friends?email=${window.localStorage.getItem('mail')}`);
+            const frnds = response.data.values;
+            if (!response) setFriends(['Start'])
+            setFriends(frnds)
+            console.log(friends)
+        }
     }
 
     useEffect(() => {
@@ -37,8 +40,10 @@ function Chats() {
         }
 
         async function fetchNick() {
-            const res = await axios.get(`${api}/users/profile?email=${window.localStorage.getItem('mail')}`)
-            setNick(res.data.values[0].nickname)
+            if(!window.localStorage.getItem('e')) {
+                const res = await axios.get(`${api}/users/profile?email=${window.localStorage.getItem('mail')}`)
+                setNick(res.data.values[0].nickname)
+            }
         }
 
         fetchNick()

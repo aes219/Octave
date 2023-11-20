@@ -4,7 +4,7 @@ module.exports = {
     route: 'users',
     method: 'GET',
     run: async (req, res) => {
-        axios.get(require('../api')('Users'))
+        axios.get(require('../api')('Accounts'))
             .then((response) => {
                 const [headerRow, ...rows] = response.data.values;
 

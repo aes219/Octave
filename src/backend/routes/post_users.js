@@ -18,15 +18,16 @@ module.exports = {
                 values: [[email, password]],
             };
             const spreadsheetId = process.env.DATABASE_ID
-            const range = 'Users!A:Z'
+            const range = 'Accounts!A:Z'
 
-            sheets.spreadsheets.values.append({
+            const res = sheets.spreadsheets.values.append({
                 auth,
                 spreadsheetId,
                 range,
                 valueInputOption: 'USER_ENTERED',
                 resource,
             })
+            console.log(res)
             res.status(200).json({
                 status: 200,
                 message: "OK",

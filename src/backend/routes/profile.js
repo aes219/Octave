@@ -8,25 +8,27 @@ module.exports = {
     method: 'POST',
     run: async (req, res) => {
         try {
-            const { email, nick, bio } = req.query
+            const { email, name, bio, pfp } = req.query
             const auth = await google.auth.getClient({
                 keyFile: creds,
                 scopes: ['https://www.googleapis.com/auth/spreadsheets']
             });
 
             const resource = {
-                values: [[email, nick, bio]],
+                values: [[email, name, bio, pfp]],
             };
             const spreadsheetId = process.env.DATABASE_ID
-            const range = 'Profiles!A:Z'
+            const range = 'Accounts!A:E'
 
-            sheets.spreadsheets.values.append({
+           const response = await sheets.spreadsheets.values.append({
                 auth,
                 spreadsheetId,
                 range,
                 valueInputOption: 'USER_ENTERED',
                 resource,
             })
+
+                console.log('Done', JSON.stringify(response))
 
             res.status(200).json({
                 status: 200,

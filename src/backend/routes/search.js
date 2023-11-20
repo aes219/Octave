@@ -5,7 +5,7 @@ module.exports = {
     method: 'GET',
     run: async (req, res) => {
         const { email } = req.query;
-        axios.get(require('../api')('Users'))
+        axios.get(require('../api')('Accounts'))
             .then((response) => {
                 const [headerRow, ...rows] = response.data.values;
 

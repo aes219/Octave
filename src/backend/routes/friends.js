@@ -20,7 +20,7 @@ module.exports = {
                 res.status(200).json({
                     status: 200,
                     message: "OK",
-                    values: JSON.parse(result[0].friends)
+                    values: result[0].friends
                 });
             })
             .catch((e) => {

@@ -6,7 +6,7 @@ import Sidebar from '../components/Sidebar';
 const api = `http://localhost:8000`;
 
 function Dashboard() {
-    if(!window.localStorage.getItem('mail'))
+    if (!window.localStorage.getItem('mail'))
         window.location = '/login'
     const [profilecomponent, setProfileComponent] = useState('')
     const [dashcomponent, setDashComponent] = useState('')
@@ -37,11 +37,16 @@ function Dashboard() {
             setBioExists(false)
             setNameExists(true)
         } else {
-            const e = window.localStorage.getItem('e')
-            axios.post(`${api}/users/profiles?email=${e}&nick=${name}&bio=${bio}`)
+            const email = window.localStorage.getItem('e')
+
+            axios.post(`${api}/users/profiles`, {
+                email: email,
+                name: name,
+                bio: bio,
+            })
                 .then(
                     window.localStorage.removeItem('e'),
-                    window.localStorage.setItem('mail', e),
+                    window.localStorage.setItem('mail', email),
                     setProfileComponent('none'),
                     setDashComponent('block')
                 )
@@ -61,7 +66,7 @@ function Dashboard() {
                 click={accountSetup}
             />
             <div style={{ display: dashcomponent }}>
-                <Sidebar/>
+                <Sidebar />
             </div>
         </>
     )

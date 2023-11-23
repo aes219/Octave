@@ -5,7 +5,7 @@ function ProfileSetup({ display, name, nChange, nExists, bio, bChange, bExists, 
         <div id="profilecomponent" style={{ display: display, margin: 80 }}>
             <h1 align="center" className='text-3xl m-10'>
                 <strong>
-                    Please finish your account setup
+                    Finish Your Profile
                 </strong>
             </h1>
             <Hero>

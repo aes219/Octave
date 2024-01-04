@@ -4,32 +4,16 @@ import { Menu, Drawer, Button } from 'react-daisyui';
 const api = `http://localhost:8000`;
 
 function Chats() {
-    const [friends, setFriends] = useState([])
     const [menuItems, setMenuItems] = useState([])
     const [nick, setNick] = useState('')
 
     async function fetchFriends() {
         if (!window.localStorage.getItem('e')) {
             const response = await axios.get(`${api}/users/profile/friends?email=${window.localStorage.getItem('mail')}`)
-            const frnds = response.data.values;
-            setFriends(frnds)
-        }
-    }
-
-    useEffect(() => {
-        fetchFriends();
-    }, []);
-
-    useEffect(() => {
-        async function fetchMenuItems() {
-            if (friends === '["Start"]') {
-                setMenuItems(
-                    <Menu.Item key="None" style={{ borderRadius: 3 }}>
-                        None
-                    </Menu.Item>
-                )
-            } else {
-                const requests = friends.map(async (friend) => {
+            const res = response.data.values;
+            const frnds = JSON.parse(res)
+            if (Array.isArray(frnds) && frnds.length > 0) {
+                const requests = frnds.map(async (friend) => {
                     const r = await axios.get(`${api}/users/profile?email=${friend}`);
                     return r.data.values[0].nickname;
                 });
@@ -39,24 +23,31 @@ function Chats() {
                     <Menu.Item key={(nickname) ? nickname : "None"} style={{ borderRadius: 3 }}>
                         {(nickname) ? nickname : "None"}
                     </Menu.Item>
-                ));
-
+                ))
                 setMenuItems(items)
+            } else {
+                setMenuItems(
+                    <Menu.Item key="None" style={{ borderRadius: 3 }}>
+                        None
+                    </Menu.Item>
+                )
             }
-
         }
+    }
 
+    useEffect(() => {
+        fetchFriends();
+    }, []);
+
+    useEffect(() => {
         async function fetchNick() {
             if (!window.localStorage.getItem('e')) {
                 const res = await axios.get(`${api}/users/profile?email=${window.localStorage.getItem('mail')}`)
                 setNick(res.data.values[0].nickname)
             }
         }
-
         fetchNick()
-        fetchMenuItems()
-
-    }, [friends]);
+    });
 
     return (
         <>

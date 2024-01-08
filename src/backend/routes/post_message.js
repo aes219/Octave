@@ -8,17 +8,17 @@ module.exports = {
     method: 'POST',
     run: async (req, res) => {
         try {
-            const { email, type, message } = req.query
+            const { sender, receiver, type, message } = req.query
             const auth = await google.auth.getClient({
                 keyFile: creds,
                 scopes: ['https://www.googleapis.com/auth/spreadsheets']
             });
 
             const resource = {
-                values: [[email, type, message]],
+                values: [[sender, receiver, type, message]],
             };
             const spreadsheetId = process.env.DATABASE_ID
-            const range = 'Messages!A:C'
+            const range = 'Messages!A:D'
 
             sheets.spreadsheets.values.append({
                 auth,

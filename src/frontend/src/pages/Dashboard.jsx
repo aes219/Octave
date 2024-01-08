@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import ProfileSetup from '../components/ProfileSetup';
 import Sidebar from '../components/Sidebar';
+import ChatWindow from '../components/ChatWindow';
 const api = `http://localhost:8000`;
 
 function Dashboard() {
@@ -65,8 +66,15 @@ function Dashboard() {
                 bExists={bioExists}
                 click={accountSetup}
             />
-            <div style={{ display: dashcomponent }}>
-                <Sidebar />
+            <div display={{ display: dashcomponent }}>
+                <div style=
+                {{
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}>
+                    <ChatWindow />
+                    <Sidebar />
+                </div>
             </div>
         </>
     )

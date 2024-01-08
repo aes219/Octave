@@ -9,9 +9,11 @@ function Chats() {
 
     async function fetchFriends() {
         if (!window.localStorage.getItem('e')) {
-            const response = await axios.get(`${api}/users/profile/friends?email=${window.localStorage.getItem('mail')}`)
+            const response = await axios.get(`${api}/users/profile/friends?email=${window.localStorage.getItem('mail')}`);
             const res = response.data.values;
-            const frnds = JSON.parse(res)
+            const frnds = JSON.parse(res);
+            let items = [];
+
             if (Array.isArray(frnds) && frnds.length > 0) {
                 const requests = frnds.map(async (friend) => {
                     const r = await axios.get(`${api}/users/profile?email=${friend}`);
@@ -19,21 +21,24 @@ function Chats() {
                 });
 
                 const nicknames = await Promise.all(requests);
-                const items = nicknames.map((nickname) => (
-                    <Menu.Item key={(nickname) ? nickname : "None"} style={{ borderRadius: 3 }}>
+
+                items = nicknames.map((nickname, index) => (
+                    <Menu.Item key={(nickname) ? [frnds[index], nickname] : "None"} style={{ borderRadius: 3 }}>
                         {(nickname) ? nickname : "None"}
                     </Menu.Item>
-                ))
-                setMenuItems(items)
+                ));
             } else {
-                setMenuItems(
+                items.push(
                     <Menu.Item key="None" style={{ borderRadius: 3 }}>
                         None
                     </Menu.Item>
-                )
+                );
             }
+
+            setMenuItems(items);
         }
     }
+
 
     useEffect(() => {
         fetchFriends();

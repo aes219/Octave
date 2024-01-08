@@ -35,7 +35,7 @@ module.exports = {
         } catch (e) {
             console.log(e)
             res.status(500).json({
-                status: 200,
+                status: 500,
                 message: "Internal Server Error"
             })
         }

@@ -1,6 +1,48 @@
+import { useEffect, useState } from 'react';
 import { Button, Navbar, Input, Join, ChatBubble } from 'react-daisyui';
+import axios from 'axios'
+const api = `http://localhost:8000`;
 
-function ChatWindow() {
+function ChatWindow({ client, recipient }) {
+
+    const [chatBubbles, setChatBubbles] = useState()
+
+    async function fetchChats() {
+        try {
+            await axios.get(`${api}/users/messages?client=${client}&recipient=${recipient}`)
+                .then((response) => {
+                    console.log(response.data)
+                    const chatBubbles = response.data.map((message, index) => {
+                        if (message.type === 's') {
+                            return (
+                                <ChatBubble key={index} end>
+                                    <ChatBubble.Message>
+                                        {message.message}
+                                    </ChatBubble.Message>
+                                </ChatBubble>
+                            );
+                        } else {
+                            return (
+                                <ChatBubble key={index}>
+                                    <ChatBubble.Message>
+                                        {message.message}
+                                    </ChatBubble.Message>
+                                </ChatBubble>
+                            );
+                        }
+                    })
+                    setChatBubbles(chatBubbles)
+                })
+            
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        fetchChats()
+    }, [client, recipient])
+
     return (
         <div style={{ margin: 250, marginTop: 0, zIndex: 1 }}>
             <div>
@@ -13,17 +55,7 @@ function ChatWindow() {
                 </Navbar>
             </div>
             <div className='chats'>
-                <ChatBubble>
-                    <ChatBubble.Message>
-                        received message
-                    </ChatBubble.Message>
-                </ChatBubble>
-
-                <ChatBubble end>
-                    <ChatBubble.Message color='primary'>
-                        sent message
-                    </ChatBubble.Message>
-                </ChatBubble>
+                {chatBubbles}
             </div>
             <div>
                 <div style={{ position: 'fixed', bottom: 5, left: 0, right: 0 }}>

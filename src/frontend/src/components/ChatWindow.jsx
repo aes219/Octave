@@ -3,8 +3,9 @@ import { Button, Navbar, Input, Join, ChatBubble } from 'react-daisyui';
 import axios from 'axios'
 const api = `http://localhost:8000`;
 
-function ChatWindow({ client, recipient }) {
-
+function ChatWindow() {
+    const client = window.localStorage.getItem('mail')
+    const recipient = window.localStorage.getItem('rcp')
     const [chatBubbles, setChatBubbles] = useState()
 
     async function fetchChats() {
@@ -41,7 +42,7 @@ function ChatWindow({ client, recipient }) {
 
     useEffect(() => {
         fetchChats()
-    }, [client, recipient])
+    })
 
     return (
         <div style={{ margin: 250, marginTop: 0, zIndex: 1 }}>

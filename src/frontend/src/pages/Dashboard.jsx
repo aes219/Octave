@@ -7,7 +7,7 @@ import ChatWindow from '../components/ChatWindow';
 const api = `http://localhost:8000`;
 
 function Dashboard() {
-    if (!window.localStorage.getItem('mail'))
+    if (!window.localStorage.getItem('mail') && !window.localStorage.getItem('e'))
         window.location = '/login'
     const [profilecomponent, setProfileComponent] = useState('')
     const [dashcomponent, setDashComponent] = useState('')
@@ -70,10 +70,10 @@ function Dashboard() {
                 <div style=
                 {{
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
                 }}>
-                    <ChatWindow />
-                    <Sidebar />
+                    <ChatWindow style={{ display: dashcomponent }}/>
+                    <Sidebar style={{ display: dashcomponent }}/>
                 </div>
             </div>
         </>

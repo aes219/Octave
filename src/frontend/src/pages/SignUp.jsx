@@ -48,7 +48,7 @@ function SignUp() {
         if (parseInt(otp) === secret) {
             createAccount(email, pass)
                 .then(window.localStorage.setItem('e', email))
-                .then(window.location.href = '/login')
+                .then(window.location.href = '/')
         }
         else
             setOtpLabel('Invalid OTP Provided')

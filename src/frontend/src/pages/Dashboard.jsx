@@ -7,6 +7,8 @@ import ChatWindow from '../components/ChatWindow';
 const api = `http://localhost:8000`;
 
 function Dashboard() {
+    const [recipientNick, setRecipientNick] = useState('')
+    const [recipientEmail, setRecipientEmail] = useState('')
     if (!window.localStorage.getItem('mail') && !window.localStorage.getItem('e'))
         window.location = '/login'
     const [profilecomponent, setProfileComponent] = useState('')
@@ -54,6 +56,13 @@ function Dashboard() {
         }
 
     }
+
+    const handleRecipientChange = (nickname, email) => {
+        setRecipientNick(nickname)
+        setRecipientEmail(email);
+    }
+
+    
     return (
         <>
             <ProfileSetup
@@ -72,8 +81,8 @@ function Dashboard() {
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
-                    <ChatWindow style={{ display: dashcomponent }}/>
-                    <Sidebar style={{ display: dashcomponent }}/>
+                    <Sidebar onRecipientChange={handleRecipientChange} style={{ display: dashcomponent }}/>
+                    <ChatWindow recipientNickname={recipientNick} recipientEmail={recipientEmail} style={{ display: dashcomponent }}/>
                 </div>
             </div>
         </>

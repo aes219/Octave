@@ -3,9 +3,13 @@ import axios from 'axios';
 import { Menu, Drawer, Button } from 'react-daisyui';
 const api = `http://localhost:8000`;
 
-function Chats() {
+function Sidebar({ onRecipientChange }) {
     const [menuItems, setMenuItems] = useState([])
     const [nick, setNick] = useState('')
+
+    const handleFriendSelect = (nickname, email) => {
+        onRecipientChange(nickname, email)
+    }
 
     const fetchFriends = (async () => {
         if (!window.localStorage.getItem('e')) {
@@ -23,7 +27,7 @@ function Chats() {
                 const nicknames = await Promise.all(requests);
 
                 items = nicknames.map((nickname, index) => (
-                    <Menu.Item onClick={() => window.localStorage.setItem('rcp', frnds[index])} style={{ borderRadius: 3 }}>
+                    <Menu.Item onClick={() => handleFriendSelect(nickname, frnds[index])} style={{ borderRadius: 3 }}>
                         {(nickname) ? nickname : "None"}
                     </Menu.Item>
                 ));
@@ -51,7 +55,7 @@ function Chats() {
             }
         }
         fetchNick()
-    });
+    }, []);
 
     return (
         <>
@@ -102,4 +106,4 @@ function Chats() {
     );
 }
 
-export default Chats
+export default Sidebar

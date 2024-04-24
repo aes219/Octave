@@ -3,46 +3,32 @@ import { Button, Navbar, Input, Join, ChatBubble } from 'react-daisyui';
 import axios from 'axios'
 const api = `http://localhost:8000`;
 
-function ChatWindow() {
+function ChatWindow({ recipientNickname, recipientEmail }) {
     const client = window.localStorage.getItem('mail')
-    const recipient = window.localStorage.getItem('rcp')
-    const [chatBubbles, setChatBubbles] = useState()
+    const [chats, setChats] = useState([])
 
     async function fetchChats() {
         try {
-            await axios.get(`${api}/users/messages?client=${client}&recipient=${recipient}`)
-                .then((response) => {
-                    console.log(response.data)
-                    const chatBubbles = response.data.map((message, index) => {
-                        if (message.type === 's') {
-                            return (
-                                <ChatBubble key={index} end>
-                                    <ChatBubble.Message>
-                                        {message.message}
-                                    </ChatBubble.Message>
-                                </ChatBubble>
-                            );
-                        } else {
-                            return (
-                                <ChatBubble key={index}>
-                                    <ChatBubble.Message>
-                                        {message.message}
-                                    </ChatBubble.Message>
-                                </ChatBubble>
-                            );
-                        }
-                    })
-                    setChatBubbles(chatBubbles)
-                })
-            
+            const response = await axios.get(`${api}/users/messages?client=${client}&recipient=${recipientEmail}`);
+            if (response.data) {
+                setChats(response.data);
+            } else {
+                setChats([]);
+            }
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
 
     useEffect(() => {
         fetchChats()
-    })
+    }, [recipientEmail])
+
+    const chatBubbles = chats.map((message, index) => (
+        <ChatBubble key={index} end={message.client === client}>
+            <ChatBubble.Message>{message.message}</ChatBubble.Message>
+        </ChatBubble>
+    ))
 
     return (
         <div style={{ margin: 250, marginTop: 0, zIndex: 1 }}>
@@ -50,7 +36,7 @@ function ChatWindow() {
                 <Navbar>
                     <Navbar.Center style={{ alignItems: 'center' }}>
                         <Button tag="a" color="ghost" className="normal-case text-xl">
-                            Hello World
+                            {recipientNickname || "Chats"}
                         </Button>
                     </Navbar.Center>
                 </Navbar>

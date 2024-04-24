@@ -18,8 +18,13 @@ module.exports = {
                     return obj
                 })
 
-                const result = Data.filter(user => user.client === client && user.recipient === recipient)
+                const result = Data.filter(entry =>
+                (entry.client == client && entry.recipient == recipient)
+                    ||
+                (entry.client == recipient && entry.recipient == client)
+                )
 
+                // console.log(result)
                 res.send(result)
             })
     }

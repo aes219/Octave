@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Input, ChatBubble, Navbar, Join } from 'react-daisyui'; // Removed unnecessary imports
+import { Button, Input, ChatBubble, Navbar, Textarea } from 'react-daisyui'; // Removed unnecessary imports
 import axios from 'axios';
 
 const api = `http://localhost:8000`;
@@ -64,12 +64,18 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
             </div>
             <div style={{ position: 'absolute', bottom: 10, left: 250, right: 20 }}>
                 <form onSubmit={handleSubmit}>
-                    <Input
+                    <Textarea
+                        rows={1}
                         style={{ width: '100%', borderRadius: 10, margin: 5}}
                         placeholder='Send a message'
                         className='join-item msg-input'
                         value={message}
                         onChange={e => setMessage(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSubmit(e)
+                            }}}
                     />
                 </form>
             </div>

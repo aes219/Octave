@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Input, ChatBubble, Navbar, Textarea } from 'react-daisyui'; // Removed unnecessary imports
+import { Button, ChatBubble, Navbar, Textarea } from 'react-daisyui';
 import axios from 'axios';
 
 const api = `http://localhost:8000`;

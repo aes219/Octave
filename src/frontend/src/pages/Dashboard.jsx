@@ -75,7 +75,7 @@ function Dashboard() {
                 bExists={bioExists}
                 click={accountSetup}
             />
-            <div display={{ display: dashcomponent }}>
+            <div style={{ display: dashcomponent }}>
                 <div style=
                 {{
                     display: 'flex',

@@ -33,7 +33,8 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
         }
     }, [counter]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         if (message) {
             await axios.post(`${api}/users/messages?client=${client}&recipient=${recipientEmail}&message=${message}`)
             setMessage('')
@@ -62,20 +63,15 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
                 ))}
             </div>
             <div style={{ position: 'absolute', bottom: 10, left: 250, right: 20 }}>
-                <Join style={{width: '100%', borderRadius: 10, margin: 5}}>
+                <form onSubmit={handleSubmit}>
                     <Input
-                        style={{ width: 'calc(100% - 80px)', marginRight: 10, }}
+                        style={{ width: '100%', borderRadius: 10, margin: 5}}
                         placeholder='Send a message'
                         className='join-item msg-input'
                         value={message}
                         onChange={e => setMessage(e.target.value)}
                     />
-                    <Button className='join-item rounded-s' color='success' onClick={handleSubmit}>
-                        <svg className='h-10' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style={{ strokeWidth: 2, strokeLinecap: 'square', strokeLinejoin: 'round' }}>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                        </svg>
-                    </Button>
-                </Join>
+                </form>
             </div>
         </div>
     );

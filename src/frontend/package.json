@@ -15,10 +15,11 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
+    "socket.io-client": "^4.7.5",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "dev": "electron .",
+    "dev": "PORT=3010 react-scripts start",
     "start": "PORT=3010 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -8,14 +8,14 @@ module.exports = {
     method: 'POST',
     run: async (req, res) => {
         try {
-            const { client, recipient, message } = req.query
+            const { client, recipient, message, timestamp } = req.query
             const auth = await google.auth.getClient({
                 keyFile: creds,
                 scopes: ['https://www.googleapis.com/auth/spreadsheets']
             });
 
             const resource = {
-                values: [[client, recipient, message]],
+                values: [[client, recipient, message, timestamp]],
             }
             const spreadsheetId = process.env.DATABASE_ID
             const range = 'Messages!A:D'

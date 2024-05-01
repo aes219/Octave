@@ -17,7 +17,7 @@ module.exports = {
         try {
             const rowReq = {
                 spreadsheetId,
-                range: 'Profiles!A:Z',
+                range: 'Profiles!A:C',
                 auth
             }
             const rowRes = await sheets.spreadsheets.values.get(rowReq)

@@ -11,8 +11,30 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
     const [chats, setChats] = useState([]);
     const [message, setMessage] = useState('');
     const [counter, setCounter] = useState(0);
+    const [socket, setSocket] = useState(null);
 
-    const socket = io()
+    useEffect(() => {
+        const newSocket = io(api);
+        setSocket(newSocket);
+
+        return () => {
+            newSocket.close();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.on('message', (newMessage) => {
+            setChats((prevChats) => [...prevChats, newMessage])
+        })
+
+        fetchChats();
+
+        return () => {
+            socket.off('message');
+        };
+    }, [socket])    
 
     async function fetchChats() {
         try {
@@ -52,35 +74,15 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
         if (message) {
             const timestamp = getCurrentTimestamp()
             await axios.post(`${api}/users/messages?client=${client}&recipient=${recipientEmail}&message=${message}&timestamp=${timestamp}`);
+            
+            if (socket)
+                socket.emit('newMessage', { message, client, timestamp });
+            
             setMessage('');
             setCounter((prevCounter) => prevCounter + 1);
             await fetchChats();
-            try {
-                const res = socket.emit('new-message', { recipientEmail, message, timestamp })
-                    console.log(res)
-                console.log('Message emitted')
-            } catch(e) {
-                console.log('Couldnt emit message:\n'+e)
-            }
         }
     }
-
-    useEffect(() => {
-        socket.on("connection", engine => {
-            engine.on('new-message', (data, callback) => {
-                if (data.recipientEmail === client)
-                    console.log("Received: "+data)
-                callback("got it")
-            })
-        })
-        /* socket.on('new-message', (data) => {
-            console.log('Received new message data:\n'+data)
-          if (data.recipientEmail === client) {
-            setChats((prevChats) => [...prevChats, data]);
-          }
-        });
-        return () => socket.disconnect(); */
-      }, []);
 
     return (
         <div style={{ marginLeft: 250, marginRight: 20, zIndex: 1 }}>

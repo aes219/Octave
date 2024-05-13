@@ -84,14 +84,16 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
         }
     }
 
+    if (!recipientNickname) return
+
     return (
         <div style={{ marginLeft: 250, marginRight: 20, zIndex: 1 }}>
             <div>
                 <Navbar>
                     <Navbar.Center style={{ alignItems: 'center' }}>
-                        <Button tag="a" color="ghost" className="normal-case text-xl">
+                        <label className="normal-case text-xl">
                             {recipientNickname || 'Chats'}
-                        </Button>
+                        </label>
                     </Navbar.Center>
                 </Navbar>
             </div>

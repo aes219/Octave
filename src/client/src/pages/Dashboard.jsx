@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileSetup from '../components/ProfileSetup';
 import Sidebar from '../components/Sidebar';
 import ChatWindow from '../components/ChatWindow';
+import Loading from '../components/Loading';
 const api = `http://localhost:8000`;
 
 function Dashboard() {
@@ -62,7 +62,6 @@ function Dashboard() {
         setRecipientEmail(email);
     }
 
-    
     return (
         <>
             <ProfileSetup
@@ -77,12 +76,12 @@ function Dashboard() {
             />
             <div style={{ display: dashcomponent }}>
                 <div style=
-                {{
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}>
-                    <Sidebar onRecipientChange={handleRecipientChange} style={{ display: dashcomponent }}/>
-                    <ChatWindow recipientNickname={recipientNick} recipientEmail={recipientEmail} style={{ display: dashcomponent }}/>
+                    {{
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}>
+                    <Sidebar onRecipientChange={handleRecipientChange} />
+                    <ChatWindow recipientNickname={recipientNick} recipientEmail={recipientEmail} />
                 </div>
             </div>
         </>

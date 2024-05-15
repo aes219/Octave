@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ProfileSetup from '../components/ProfileSetup';
 import Sidebar from '../components/Sidebar';
 import ChatWindow from '../components/ChatWindow';
-import Loading from '../components/Loading';
+
 const api = `http://localhost:8000`;
 
 function Dashboard() {

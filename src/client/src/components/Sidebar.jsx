@@ -10,15 +10,15 @@ function Sidebar({ onRecipientChange }) {
   const [menuItems, setMenuItems] = useState([]);
   const [nick, setNick] = useState("");
 
+  const client = window.localStorage.getItem("mail")
+
   const handleFriendSelect = (nickname, email) => onRecipientChange(nickname, email);
 
   const fetchFriends = async () => {
     try {
       if (!window.localStorage.getItem("e")) {
         const response = await axios.get(
-          `${api}/users/profile/friends?email=${window.localStorage.getItem(
-            "mail"
-          )}`
+          `${api}/users/profile/friends?email=${client}}`
         );
         const res = response.data.values;
         const frnds = JSON.parse(res);
@@ -59,7 +59,8 @@ function Sidebar({ onRecipientChange }) {
 
   useEffect(() => {
     fetchFriends();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [client]);
 
   useEffect(() => {
     async function fetchNick() {

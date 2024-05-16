@@ -28,6 +28,10 @@
     border-width: 0 !important;
 }
 
+.alert h3 {
+    font-weight: bolder;
+}
+
 input,
 button {
     border-radius: 7px !important;

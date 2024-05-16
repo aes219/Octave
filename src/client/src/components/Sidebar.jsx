@@ -18,7 +18,7 @@ function Sidebar({ onRecipientChange }) {
     try {
       if (!window.localStorage.getItem("e")) {
         const response = await axios.get(
-          `${api}/users/profile/friends?email=${client}}`
+          `${api}/users/profile/friends?email=${client}`
         );
         const res = response.data.values;
         const frnds = JSON.parse(res);
@@ -67,7 +67,7 @@ function Sidebar({ onRecipientChange }) {
       try {
         if (!window.localStorage.getItem("e")) {
           const res = await axios.get(
-            `${api}/users/profile?email=${window.localStorage.getItem("mail")}`
+            `${api}/users/profile?email=${client}`
           );
           setNick(res.data.values[0].nickname);
         }
@@ -76,7 +76,7 @@ function Sidebar({ onRecipientChange }) {
       }
     }
     fetchNick();
-  }, []);
+  }, [client]);
 
   if (loading) return <Loading />;
 
@@ -124,7 +124,7 @@ function Sidebar({ onRecipientChange }) {
                 <Menu.Item>
                   <Menu.Title className="text-lg">Me</Menu.Title>
                   <Menu.Item
-                    style={{ borderRadius: 3 }}
+                    style={{ borderRadius: 7 }}
                     onClick={function redirectToProfilePage() {
                       window.location = "/profile";
                     }}
@@ -148,7 +148,27 @@ function Sidebar({ onRecipientChange }) {
                     Profile
                   </Menu.Item>
                   <Menu.Item
-                    style={{ borderRadius: 3 }}
+                    style={{ borderRadius: 7 }}
+                    onClick={() => window.location = "/inbox"}
+                  >
+                    <svg
+                      className="h-10"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      style={{
+                        strokeWidth: 2,
+                        strokeLinecap: "square",
+                        strokeLinejoin: "round",
+                      }}
+                    >
+                      <path d="M21.5 12H16c-.7 2-2 3-4 3s-3.3-1-4-3H2.5" /><path d="M5.5 5.1L2 12v6c0 1.1.9 2 2 2h16a2 2 0 002-2v-6l-3.4-6.9A2 2 0 0016.8 4H7.2a2 2 0 00-1.8 1.1z" />
+                    </svg>
+                    Inbox
+                  </Menu.Item>
+                  <Menu.Item
+                    style={{ borderRadius: 7 }}
                     onClick={function redirectToFriendsPage() {
                       window.location = "/friends";
                     }}

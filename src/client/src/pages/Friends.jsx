@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer } from "react"
+import { useEffect, useState } from "react"
 import { Button, Card, Hero, Input } from "react-daisyui"
 import axios from "axios"
 import Loading from "../components/Loading";
@@ -9,6 +9,7 @@ function Friends() {
     const [reload, forceReload] = useState()
 
     const [cards, setCards] = useState([])
+
     const [loading, setLoading] = useState(true)
 
     const client = window.localStorage.getItem("mail")
@@ -17,8 +18,8 @@ function Friends() {
         try {
             await axios.delete(`${api}/users/profile/friends?email=${client}&friend=${friend}`)
             forceReload(Math.random())
-        } catch(e) {
-            console.log("Error removing friend: ",e)
+        } catch (e) {
+            console.log("Error removing friend: ", e)
         }
     }
     const fetchData = async () => {
@@ -56,6 +57,7 @@ function Friends() {
 
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload])
 
     if (loading) return <Loading />

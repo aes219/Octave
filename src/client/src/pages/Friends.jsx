@@ -7,12 +7,38 @@ const api = `http://localhost:8000`;
 function Friends() {
 
     const [reload, forceReload] = useState()
-
     const [cards, setCards] = useState([])
-
     const [loading, setLoading] = useState(true)
+    const [friendEmail, setFriendEmail] = useState("")
+    const [label, setLabel] = useState("Add a friend")
+    const [border, setBorder] = useState("")
 
     const client = window.localStorage.getItem("mail")
+
+    const sendFriendReq = async () => {
+        if (!friendEmail) {
+            setLabel("Please enter an email to send a friend request to")
+            setBorder("error")
+        } else {
+            setLabel(`Sent a friend request to ${friendEmail}`)
+            setFriendEmail("")
+            setBorder("")
+            const response = await axios.get(`${api}/users/notifs?email=${friendEmail}`)
+            const values = response.data.values
+            const array = JSON.parse(values[0].notifications)
+            array.push(client)
+            await axios.put(`${api}/users/notifs`, {
+                email: friendEmail,
+                notifs: array
+            })
+                .then(() => {
+                    forceReload(Math.random())
+                })
+                .catch((e) => console.log("Error sendFriendReq():\n", e))
+
+        }
+
+    }
 
     const removeFriend = async (friend) => {
         try {
@@ -69,9 +95,16 @@ function Friends() {
                     <Hero>
                         <Hero.Content className="text-center">
                             <div className="max-w-md">
-                                <h1 className="text-5xl font-bold"><b>Add a friend</b></h1>
-                                <Input className="w-full" placeholder="bro@club.xyz" />
-                                <Button color="primary" style={{ margin: 10 }}>Send Request</Button>
+                                <h1 className="text-5xl font-bold"><strong>{label}</strong></h1>
+                                <Input
+                                    className="w-full"
+                                    placeholder="bro@club.xyz"
+                                    onChange={e => setFriendEmail(e.target.value)}
+                                    value={friendEmail}
+                                    color={border}
+                                    type="email"
+                                />
+                                <Button color="primary" style={{ margin: 10 }} onClick={sendFriendReq}>Send Request</Button>
                                 <Button color="info" style={{ margin: 10 }} onClick={() => { window.location = "/" }}>Back</Button>
                             </div>
                         </Hero.Content>

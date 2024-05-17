@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { google } = require("googleapis");
 const sheets = google.sheets({ version: "v4" });
-const creds = "./credentials.json";
+const creds = process.env.CREDS;
 
 module.exports = {
   route: "users/profile",

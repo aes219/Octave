@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const { google } = require("googleapis");
 
-const creds = "./credentials.json";
+const creds = process.env.CREDS;
 
 const sheetId = process.env.DATABASE_ID;
 

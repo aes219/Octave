@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Button, ChatBubble, Navbar, Textarea } from 'react-daisyui';
+import { ChatBubble, Navbar, Textarea } from 'react-daisyui';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-const api = `http://localhost:8000`;
+const api = require("../config.json").SERVER_URL
 
 function ChatWindow({ recipientNickname, recipientEmail }) {
 
@@ -14,7 +14,7 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = io(api);
+        const newSocket = io(api, { transports: ['websocket'] });
         setSocket(newSocket);
 
         return () => {
@@ -34,7 +34,7 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
         return () => {
             socket.off('message');
         };
-    }, [socket])    
+    }, [socket])
 
     async function fetchChats() {
         try {
@@ -74,10 +74,10 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
         if (message) {
             const timestamp = getCurrentTimestamp()
             await axios.post(`${api}/users/messages?client=${client}&recipient=${recipientEmail}&message=${message}&timestamp=${timestamp}`);
-            
+
             if (socket)
                 socket.emit('newMessage', { message, client, timestamp });
-            
+
             setMessage('');
             setCounter((prevCounter) => prevCounter + 1);
             await fetchChats();

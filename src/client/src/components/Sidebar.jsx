@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Menu, Drawer, Button } from "react-daisyui";
 import Loading from "./Loading";
-const api = `http://localhost:8000`;
+const api = require("../config.json").SERVER_URL
 
 function Sidebar({ onRecipientChange }) {
   const [loading, setLoading] = useState(true);

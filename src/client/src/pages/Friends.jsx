@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Button, Card, Hero, Input } from "react-daisyui"
 import axios from "axios"
 import Loading from "../components/Loading";
-const api = `http://localhost:8000`;
+const api = require("../config.json").SERVER_URL
 
 function Friends() {
 

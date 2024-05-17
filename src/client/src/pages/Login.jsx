@@ -3,7 +3,7 @@ import { useState } from 'react'
 import SecurityCode from '../components/SecurityCode';
 import ForgotPassword from '../components/ForgotPassword';
 import LoginBox from '../components/LoginBox';
-const api = `http://localhost:8000`;
+const api = require("../config.json").SERVER_URL
 function Login() {
 
     const [email, setEmail] = useState('')

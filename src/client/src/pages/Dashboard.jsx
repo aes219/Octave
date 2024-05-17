@@ -4,7 +4,7 @@ import ProfileSetup from '../components/ProfileSetup';
 import Sidebar from '../components/Sidebar';
 import ChatWindow from '../components/ChatWindow';
 
-const api = `http://localhost:8000`;
+const api = require("../config.json").SERVER_URL
 
 function Dashboard() {
     const [recipientNick, setRecipientNick] = useState('')

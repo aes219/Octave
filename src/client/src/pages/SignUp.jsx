@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import SecurityCode from '../components/SecurityCode';
 import SignupBox from '../components/SignupBox';
-const api = `http://localhost:8000`;
+const api = require("../config.json").SERVER_URL
 
 function SignUp() {
     const [email, setEmail] = useState('')

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Hero, Navbar } from "react-daisyui"
 import Loading from "../components/Loading";
 
-const api = `http://localhost:8000`;
+const api = require("../config.json").SERVER_URL
 
 function Inbox() {
 

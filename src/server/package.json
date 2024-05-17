@@ -7,7 +7,8 @@
     "node": "20.x"
   },
   "scripts": {
-    "dev": "nodemon ."
+    "dev": "nodemon .",
+    "start": "node app.js"
   },
   "author": "Vaidik",
   "license": "ISC",

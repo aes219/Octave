@@ -29,6 +29,7 @@ function SignUp() {
             .then((response) => {
                 const hashedPass = response.data
                 axios.post(`${api}/users?email=${email}&password=${hashedPass}`)
+                axios.post(`${api}/users/notifs?email=${email}&notifs=[]`)
             })
         window.localStorage.setItem('e', email)
     }

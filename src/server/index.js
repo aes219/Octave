@@ -7,13 +7,14 @@ const http = require('http');
 const socketIo = require('socket.io'); 
 const app = express();
 const port = process.env.PORT || 8000;
+const origin = process.env.ORIGIN
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
 var allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', "https://octave-client.vercel.app");
+  res.header('Access-Control-Allow-Origin', origin);
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");  res.header('Access-Control-Allow-Credentials', 'true'); 
   next();
@@ -30,7 +31,7 @@ app.get('/socket.io/socket.io.js', (req, res) => {
 const server = http.createServer(app); 
 const io = socketIo(server, {
   cors: {
-    origin: "https://octave-client.vercel.app", 
+    origin: origin, 
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: true 

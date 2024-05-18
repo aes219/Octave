@@ -16,23 +16,32 @@ module.exports = {
         pass: process.env.EMAIL_PASSWORD
       }
     })
-    transporter.sendMail({
+
+    const mailData = {
       from: `Octave <${process.env.EMAIL_ID}>`,
       to: recipient,
       subject: subject,
       html: msg,
-    })
-      .then(
-        res
-          .status(200)
-          .json({
-            from: `Octave <${process.env.EMAIL_ID}>`,
-            to: recipient,
-            subject: subject,
-            text: msg,
-          }))
-      .catch((e) => {
-        console.log(e)
+    }
+
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailData, (err, info) => {
+        if (err) {
+          console.error(err)
+          reject(err)
+        } else {
+          res
+            .status(200)
+            .json({
+              from: `Octave <${process.env.EMAIL_ID}>`,
+              to: recipient,
+              subject: subject,
+              text: msg,
+            })
+          resolve(info)
+        }
       })
+    })
+
   }
 }

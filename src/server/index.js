@@ -7,7 +7,7 @@ const http = require('http');
 const socketIo = require('socket.io'); 
 const app = express();
 const port = process.env.PORT || 8000;
-const origin = process.env.ORIGIN
+const origin = "https://octave-chat.vercel.app"
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

@@ -1,90 +1,87 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ChatBubble, Navbar, Textarea } from 'react-daisyui';
 import axios from 'axios';
-import io from 'socket.io-client';
+import Ably from 'ably';
+import { v4 as uuidv4 } from 'uuid'
 
-const api = require("../config.json").SERVER_URL
+const api = require("../config.json").SERVER_URL;
 
 function ChatWindow({ recipientNickname, recipientEmail }) {
-
     const client = window.localStorage.getItem('mail');
     const [chats, setChats] = useState([]);
     const [message, setMessage] = useState('');
-    const [counter, setCounter] = useState(0);
-    const [socket, setSocket] = useState(null);
+    const [channel, setChannel] = useState(null);
+
+    const chatContainerRef = useRef(null);
 
     useEffect(() => {
-        const newSocket = io(api, { transports: ['websocket'] });
-        setSocket(newSocket);
-
-        return () => {
-            newSocket.close();
-        };
-    }, []);
+        if (chatContainerRef.current)
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }, [chats])
 
     useEffect(() => {
-        if (!socket) return;
+        const ablyRealtime = new Ably.Realtime(require("../config.json").ABLY_TOKEN);
 
-        socket.on('message', (newMessage) => {
-            setChats((prevChats) => [...prevChats, newMessage])
-        })
+        ablyRealtime.connection.once("connected", () => {
+            const chatChannel = ablyRealtime.channels.get(`chat`);
+            setChannel(chatChannel);
 
-        fetchChats();
+            chatChannel.subscribe((msg) => {
+                setChats((prevChats) => {
+                    const messageExists = prevChats.some(chat => chat.id === msg.data.id);
+                    if (!messageExists) {
+                        return [...prevChats, msg.data];
+                    }
+                    return prevChats;
+                });
+            });
+        });
+
 
         return () => {
-            socket.off('message');
+            if (ablyRealtime) ablyRealtime.connection.close();
         };
-    }, [socket])
-
-    async function fetchChats() {
-        try {
-            const response = await axios.get(`${api}/users/messages?client=${client}&recipient=${recipientEmail}`);
-            if (response.data)
-                setChats(response.data);
-            else
-                setChats([]);
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    }, [client, recipientEmail]);
 
     useEffect(() => {
         fetchChats();
     }, [recipientEmail]);
 
-    useEffect(() => {
-        if (counter > 0) {
-            fetchChats();
+    async function fetchChats() {
+        try {
+            const response = await axios.get(`${api}/users/messages?client=${client}&recipient=${recipientEmail}`);
+            setChats(response.data);
+        } catch (e) {
+            console.log(e);
         }
-    }, [counter]);
+    }
 
     const getCurrentTimestamp = () => {
         const currentDate = new Date();
-        const hours = currentDate.getHours();
-        const minutes = currentDate.getMinutes();
+        const hours = String(currentDate.getHours()).padStart(2, '0');
+        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
         const day = currentDate.getDate();
         const month = currentDate.toLocaleString('default', { month: 'short' });
         const year = currentDate.getFullYear();
-        const formattedTimestamp = `Sent at ${hours}:${minutes} on ${day} ${month} ${year}`;
-        return formattedTimestamp;
+        return `Sent at ${hours}:${minutes} on ${day} ${month} ${year}`;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (message) {
-            const timestamp = getCurrentTimestamp()
-            await axios.post(`${api}/users/messages?client=${client}&recipient=${recipientEmail}&message=${message}&timestamp=${timestamp}`);
+            const timestamp = getCurrentTimestamp();
+            const id = uuidv4();
+            const newMessage = { message, client, timestamp, id };
 
-            if (socket)
-                socket.emit('newMessage', { message, client, timestamp });
-
+            setChats((prevChats) => [...prevChats, newMessage]);
             setMessage('');
-            setCounter((prevCounter) => prevCounter + 1);
-            await fetchChats();
-        }
-    }
 
-    if (!recipientNickname) return
+            await axios.post(`${api}/users/messages?client=${client}&recipient=${recipientEmail}&message=${message}&timestamp=${timestamp}`);
+            channel.publish('newMessage', newMessage);
+        }
+    };
+
+    if (!recipientNickname) return null;
 
     return (
         <div style={{ marginLeft: 250, marginRight: 20, zIndex: 1 }}>
@@ -98,11 +95,15 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
                 </Navbar>
             </div>
 
-            <div className='chats' style={{ maxHeight: '75vh', overflowY: 'auto' }}>
-                {chats.map((message, index) => (
-                    <ChatBubble key={index} end={message.client === client}>
-                        <ChatBubble.Message>{message.message}</ChatBubble.Message>
-                        <ChatBubble.Footer>{message.footer}</ChatBubble.Footer>
+            <div
+                className='chats'
+                style={{ maxHeight: '75vh', overflowY: 'auto' }}
+                ref={chatContainerRef}
+            >
+                {chats.map((chatMessage, index) => (
+                    <ChatBubble key={index} end={chatMessage.client === client}>
+                        <ChatBubble.Message>{chatMessage.message}</ChatBubble.Message>
+                        <ChatBubble.Footer>{chatMessage.timestamp}</ChatBubble.Footer>
                     </ChatBubble>
                 ))}
             </div>
@@ -128,4 +129,4 @@ function ChatWindow({ recipientNickname, recipientEmail }) {
     );
 }
 
-export default ChatWindow
+export default ChatWindow;

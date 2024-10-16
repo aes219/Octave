@@ -8,7 +8,7 @@ module.exports = {
     const { recipient, subject, msg } = req.query
 
     let transporter = nodemailer.createTransport({
-      host: 'smtp-mail.outlook.com',
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {

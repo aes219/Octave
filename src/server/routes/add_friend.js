@@ -17,7 +17,7 @@ module.exports = {
             keyFile: creds,
             scopes: ["https://www.googleapis.com/auth/spreadsheets"],
         });
-        const spreadsheetId = process.env.DATABASE_ID;
+        const spreadsheetId = process.env.SHEET_ID;
         try {
             const rowReq = {
                 spreadsheetId,

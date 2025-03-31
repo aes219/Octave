@@ -16,6 +16,7 @@ function Inbox() {
     const acceptFriendRequest = async (friend) => {
         setNotifications(notifications.filter(notification => notification.key === friend));
 
+        //appending to friend's array
         const response2 = await axios.get(`${api}/users/profile/friends?email=${friend}`);
         const values2 = response2.data.values;
         let array2 = JSON.parse(values2);
@@ -25,6 +26,7 @@ function Inbox() {
                 console.log("Error accepting friend request:", error);
             });
 
+        //appending to client's array
         const response = await axios.get(`${api}/users/profile/friends?email=${client}`);
         const values = response.data.values;
         let array = JSON.parse(values);

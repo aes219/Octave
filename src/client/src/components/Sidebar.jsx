@@ -23,7 +23,7 @@ function Sidebar({ onRecipientChange }) {
         const res = response.data.values;
         const frnds = JSON.parse(res);
         let items = [];
-        if (Array.isArray(frnds) && frnds.length > 0 && res !== '["Start"]') {
+        if (Array.isArray(frnds) && frnds.length > 0 && res !== '[]') {
           const requests = frnds.map(async (friend) => {
             const r = await axios.get(`${api}/users/profile?email=${friend}`);
             return r.data.values[0].nickname;

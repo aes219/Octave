@@ -1,6 +1,5 @@
 {
-  "name": "octave",
-  "main": "./app/Main.js",
+  "name": "octave-client",
   "version": "2.0.0",
   "private": true,
   "dependencies": {
@@ -21,8 +20,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "dev": "PORT=3010 react-scripts start",
-    "start": "PORT=3010 react-scripts start",
+    "dev": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

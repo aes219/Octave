@@ -1,7 +1,8 @@
 require('dotenv').config()
 const { google } = require('googleapis');
 const sheets = google.sheets({ version: 'v4' })
-const creds = './credentials.json'
+const path = require("path") 
+const creds = path.join(process.cwd(), 'credentials.json');
 
 module.exports = {
     route: 'users/profiles',
@@ -15,9 +16,9 @@ module.exports = {
             });
 
             const resource = {
-                values: [[email, name, bio, '["Start"]']],
+                values: [[email, name, bio, '[]']],
             };
-            const spreadsheetId = process.env.DATABASE_ID
+            const spreadsheetId = process.env.SHEET_ID
             const range = 'Profiles!A:E'
 
             sheets.spreadsheets.values.append({

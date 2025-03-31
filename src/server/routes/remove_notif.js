@@ -4,9 +4,8 @@ const { google } = require("googleapis");
 
 const path = require("path") 
 const creds = path.join(process.cwd(), 'credentials.json');
-;
 
-const sheetId = process.env.DATABASE_ID;
+const sheetId = process.env.SHEET_ID;
 
 module.exports = {
     route: "users/notifs",
@@ -20,12 +19,11 @@ module.exports = {
                 scopes: ["https://www.googleapis.com/auth/spreadsheets"],
             });
 
-            const sheets = google.sheets({ version: "v4" });
+            const sheets = google.sheets({ version: "v4", auth });
 
             const response = await sheets.spreadsheets.values.get({
                 spreadsheetId: sheetId,
-                range: "Inboxes!A:Z",
-                key: process.env.API_KEY
+                range: "Inboxes!A:B",
             });
 
             const rows = response.data.values;

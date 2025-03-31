@@ -1,25 +1,26 @@
-require("dotenv").config()
-const { google } = require("googleapis")
-const sheets = google.sheets({ version: "v4" })
+require('dotenv').config()
+
+const { google } = require('googleapis');
+const sheets = google.sheets({ version: 'v4' })
 const path = require("path") 
 const creds = path.join(process.cwd(), 'credentials.json');
 
 module.exports = {
-    route: "users/messages",
+    route: "users/notifs",
     method: 'POST',
     run: async (req, res) => {
         try {
-            const { client, recipient, message, timestamp } = req.query
+            const { email } = req.query
             const auth = await google.auth.getClient({
                 keyFile: creds,
                 scopes: ['https://www.googleapis.com/auth/spreadsheets']
             });
 
             const resource = {
-                values: [[client, recipient, message, timestamp]],
-            }
+                values: [[email, "[]"]],
+            };
             const spreadsheetId = process.env.SHEET_ID
-            const range = 'Messages!A:D'
+            const range = 'Inboxes!A:B'
 
             sheets.spreadsheets.values.append({
                 auth,
@@ -37,7 +38,7 @@ module.exports = {
             console.log(e)
             res.status(500).json({
                 status: 500,
-                message: "INTERNAL SERVER ERROR"
+                message: "Internal Server Error"
             })
         }
     }

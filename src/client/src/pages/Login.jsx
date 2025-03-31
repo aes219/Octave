@@ -30,11 +30,13 @@ function Login() {
     }
 
     async function checkUser(email, password) {
-        const response = await axios.get(`${api}/hash?string=${password}`)
-        const res = await axios.get(`${api}/search?email=${email}`)
-        let userEmail = res.data[0].email === email;
-        let userPass = res.data[0].password === response.data;
-        if (userEmail && userPass) return true
+        try {
+            const response = await axios.get(`${api}/hash?string=${password}`)
+            const res = await axios.get(`${api}/search?email=${email}`)
+            let userEmail = res.data[0].email === email;
+            let userPass = res.data[0].password === response.data;
+            if (userEmail && userPass) return true
+        } catch (e) { return false }
     }
 
     function smh(n) {
@@ -141,7 +143,7 @@ function Login() {
                 password={pass}
                 pChange={e => setPass(e.target.value)}
                 fpClick={resetPassword}
-                click={handleSubmit}
+                submission={handleSubmit}
             />
         </>
     )

@@ -4,9 +4,8 @@ const { google } = require("googleapis");
 
 const path = require("path") 
 const creds = path.join(process.cwd(), 'credentials.json');
-;
 
-const sheetId = process.env.DATABASE_ID;
+const sheetId = process.env.SHEET_ID;
 
 module.exports = {
   route: "users/profile/friends",

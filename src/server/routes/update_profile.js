@@ -3,7 +3,6 @@ const { google } = require("googleapis");
 const sheets = google.sheets({ version: "v4" });
 const path = require("path") 
 const creds = path.join(process.cwd(), 'credentials.json');
-;
 
 module.exports = {
   route: "users/profile",
@@ -14,7 +13,7 @@ module.exports = {
       keyFile: creds,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
-    const spreadsheetId = process.env.DATABASE_ID;
+    const spreadsheetId = process.env.SHEET_ID;
 
     try {
       const rowReq = {
@@ -52,9 +51,13 @@ module.exports = {
           values: [[bio]],
         },
       };
-      const response = await sheets.spreadsheets.values.update(nickUpdateRequest);
-      const response2 = await sheets.spreadsheets.values.update(bioUpdateRequest);
-      
+      const response = await sheets.spreadsheets.values.update(
+        nickUpdateRequest
+      );
+      const response2 = await sheets.spreadsheets.values.update(
+        bioUpdateRequest
+      );
+
       res.status(200).send({ response, response2 });
     } catch (e) {
       res.status(500).json({

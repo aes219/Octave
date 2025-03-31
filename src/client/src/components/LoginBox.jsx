@@ -1,6 +1,6 @@
 import { Hero, Card, Form, Input, Button, Link } from 'react-daisyui'
 
-function LoginBox({ display, title, eLabel, eExists, email, eChange, pLabel, pExists, password, pChange, fpClick, click }) {
+function LoginBox({ display, title, eLabel, eExists, email, eChange, pLabel, pExists, password, pChange, fpClick, submission }) {
     return (
         <>
             <div id='logincomponent' style={{ display: display, margin: 70 }}>
@@ -16,7 +16,7 @@ function LoginBox({ display, title, eLabel, eExists, email, eChange, pLabel, pEx
                         <Card className="flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                             <Card.Body>
                                 <Card.Title tag="h1">{title}</Card.Title>
-                                <Form>
+                                <Form onSubmit={submission}>
                                     <Form.Label title={eLabel} />
                                     <Input
                                         type="email"
@@ -25,8 +25,6 @@ function LoginBox({ display, title, eLabel, eExists, email, eChange, pLabel, pEx
                                         value={email}
                                         onChange={eChange}
                                     />
-                                </Form>
-                                <Form>
                                     <Form.Label title={pLabel} />
                                     <Input
                                         type="password"
@@ -45,9 +43,7 @@ function LoginBox({ display, title, eLabel, eExists, email, eChange, pLabel, pEx
                                             New to Octave? SignUp now →
                                         </Link>
                                     </label>
-                                </Form>
-                                <Form className="mt-6">
-                                    <Button color='info' variant='outline' className='no-animation' onClick={click}>Login</Button>
+                                    <Button color='info' variant='outline' className='no-animation' type='submit'>Login</Button>
                                 </Form>
                             </Card.Body>
                         </Card>

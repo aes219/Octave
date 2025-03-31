@@ -1,37 +1,54 @@
-const axios = require('axios')
+const { google } = require('googleapis');
+const { readFileSync } = require("fs");
+const { join } = require("path");
+
+const credsPath = join(process.cwd(), 'credentials.json');
+const creds = JSON.parse(readFileSync(credsPath, 'utf8'));
 
 module.exports = {
     route: "users/notifs",
     method: "GET",
     run: async (req, res) => {
-        const { email } = req.query
+        try {
+            const { email } = req.query;
 
-        axios.get(require("../api")("Inboxes"))
-            .then((response) => {
-                const [headerRow, ...rows] = response.data.values
+            const auth = await google.auth.getClient({
+                credentials: creds,
+                scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+            });
 
-                const Data = rows.map(row => {
-                    const obj = {};
-                    headerRow.forEach((key, index) => {
-                        obj[key] = row[index];
-                    });
-                    return obj;
+            const sheets = google.sheets({ version: 'v4', auth });
+            const spreadsheetId = process.env.SHEET_ID;
+            const range = 'Inboxes!A:Z';
+
+            const response = await sheets.spreadsheets.values.get({
+                spreadsheetId,
+                range,
+            });
+
+            const [headerRow, ...rows] = response.data.values;
+
+            const Data = rows.map(row => {
+                const obj = {};
+                headerRow.forEach((key, index) => {
+                    obj[key] = row[index] || '';
                 });
+                return obj;
+            });
 
-                const result = Data.filter(user => user.email === email)
+            const result = Data.filter(user => user.email === email);
 
-                res.status(200).json({
-                    status: 200,
-                    message: "OK",
-                    values: result
-                });
-            })
-            .catch((e) => {
-                console.log("Error fetching notifs:\n", e)
-                res.status(500).send({
-                    status: 500,
-                    message: "Internal Server Error"
-                })
-            })
-    }
-}
+            res.status(200).json({
+                status: 200,
+                message: "OK",
+                values: result,
+            });
+        } catch (e) {
+            console.error("Error fetching notifs:", e);
+            res.status(500).json({
+                status: 500,
+                message: "Internal Server Error",
+            });
+        }
+    },
+};

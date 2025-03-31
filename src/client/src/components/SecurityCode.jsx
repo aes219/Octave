@@ -1,6 +1,6 @@
 import { Hero, Card, Form, Input, Button } from 'react-daisyui'
 
-function SecurityCode({ display, label, value, change, click }) {
+function SecurityCode({ display, label, value, change, submission }) {
     return (
         <>
             <div id="otpcomponent" style={{ display: display, margin: 170 }}>
@@ -9,22 +9,22 @@ function SecurityCode({ display, label, value, change, click }) {
                         {label}
                     </strong>
                 </h1>
-                <Hero>
-                    <Hero.Content className="flex-col lg:flex-row-reverse">
-                        <Card className="flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                            <Card.Body>
-                                <Form>
+                <Form onSubmit={submission}>
+                    <Hero>
+                        <Hero.Content className="flex-col lg:flex-row-reverse">
+                            <Card className="flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                                <Card.Body>
                                     <Input
                                         type='number'
                                         value={value}
                                         onChange={change}
                                     />
-                                </Form>
-                                <Button color='info' variant='outline' className='no-animation' onClick={click}>Submit</Button>
-                            </Card.Body>
-                        </Card>
-                    </Hero.Content>
-                </Hero>
+                                    <Button color='info' variant='outline' className='no-animation' type='submit'>Submit</Button>
+                                </Card.Body>
+                            </Card>
+                        </Hero.Content>
+                    </Hero>
+                </Form>
             </div>
         </>
     )

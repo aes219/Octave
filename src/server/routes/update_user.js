@@ -1,7 +1,8 @@
 require('dotenv').config()
 const { google } = require('googleapis');
 const sheets = google.sheets({ version: 'v4' })
-const creds = './credentials.json'
+const path = require("path") 
+const creds = path.join(process.cwd(), 'credentials.json');
 
 module.exports = {
     route: 'users/update',
@@ -12,7 +13,7 @@ module.exports = {
             keyFile: creds,
             scopes: ['https://www.googleapis.com/auth/spreadsheets']
         })
-        const spreadsheetId = process.env.DATABASE_ID
+        const spreadsheetId = process.env.SHEET_ID
 
         try {
             const rowReq = {

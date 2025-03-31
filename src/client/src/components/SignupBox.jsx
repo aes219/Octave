@@ -1,6 +1,6 @@
 import { Hero, Card, Form, Input, Link, Button } from 'react-daisyui'
 
-function SignupBox({ display, eLabel, eExists, email, eChange, pLabel, pExists, password, pChange, click }) {
+function SignupBox({ display, eLabel, eExists, email, eChange, pLabel, pExists, password, pChange, submission }) {
     return (
         <>
             <div id="sigupcomponent" style={{ display: display, margin: 80 }}>
@@ -15,7 +15,7 @@ function SignupBox({ display, eLabel, eExists, email, eChange, pLabel, pExists, 
                     <Hero.Content className="flex-col lg:flex-row-reverse">
                         <Card className="flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                             <Card.Body>
-                                <Form>
+                                <Form onSubmit={submission}>
                                     <Form.Label title={eLabel} />
                                     <Input
                                         type="email"
@@ -25,8 +25,6 @@ function SignupBox({ display, eLabel, eExists, email, eChange, pLabel, pExists, 
                                         onChange={eChange}
                                         name='email'
                                     />
-                                </Form>
-                                <Form>
                                     <Form.Label title={pLabel} />
                                     <Input
                                         type="password"
@@ -41,9 +39,7 @@ function SignupBox({ display, eLabel, eExists, email, eChange, pLabel, pExists, 
                                             Already have an account? Login here →
                                         </Link>
                                     </label>
-                                </Form>
-                                <Form className="mt-6">
-                                    <Button color='info' variant='outline' className='no-animation' onClick={click}>Sign Up</Button>
+                                    <Button color='info' variant='outline' className='no-animation' type='submit'>Sign Up</Button>
                                 </Form>
                             </Card.Body>
                         </Card>

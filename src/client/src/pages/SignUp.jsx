@@ -25,14 +25,19 @@ function SignUp() {
     }
 
     async function createAccount(email, password) {
-        axios.get(`${api}/hash?string=${password}`)
-            .then((response) => {
-                const hashedPass = response.data
-                axios.post(`${api}/users?email=${email}&password=${hashedPass}`)
-                axios.post(`${api}/users/notifs?email=${email}&notifs=[]`)
-            })
-        window.localStorage.setItem('e', email)
+        try {
+            const response = await axios.get(`${api}/hash?string=${password}`);
+            const hashedPass = response.data;
+    
+            await axios.post(`${api}/users?email=${email}&password=${hashedPass}`);
+            await axios.post(`${api}/users/notifs?email=${email}&notifs=[]`);
+    
+            window.localStorage.setItem('e', email);
+        } catch (error) {
+            console.error("Account creation failed:", error);
+        }
     }
+    
     async function sendOTP() {
         const otpCode = await generateOTP();
         setSecret(otpCode);
@@ -43,17 +48,21 @@ function SignUp() {
         axios.post(`${api}/mail?recipient=${email}&subject=Security+Code&msg=Here+is+your+4+digit+security+code+to+create+an+Octave+Account:+<strong>${otpCode}</strong>`)
     }
 
-    async function checkOTP() {
-        console.log(otp)
-        console.log(`secret :-\n${secret}`)
+    async function checkOTP(e) {
+        e.preventDefault();
+    
+        console.log(otp);
+        console.log(`secret :-\n${secret}`);
+    
         if (parseInt(otp) === secret) {
-            createAccount(email, pass)
-                .then(window.localStorage.setItem('e', email))
-                .then(window.location.href = '/')
+            await createAccount(email, pass);
+            window.localStorage.setItem('e', email);
+            window.location.href = '/';
+        } else {
+            setOtpLabel('Invalid OTP Provided');
         }
-        else
-            setOtpLabel('Invalid OTP Provided')
     }
+    
     const checkExists = async (email) => {
         const res = await fetch(`${api}/search?email=${email}`, {
             method: 'GET'
@@ -104,7 +113,7 @@ function SignUp() {
                 label={otpLabel}
                 value={otp}
                 change={e => setOtp(e.target.value)}
-                click={checkOTP}
+                submission={checkOTP}
             />
             {/* Signup Component */}
             <SignupBox
@@ -117,7 +126,7 @@ function SignUp() {
                 pExists={passExists}
                 password={pass}
                 pChange={e => setPass(e.target.value)}
-                click={handleSubmit}
+                submission={handleSubmit}
             />
         </>
     )

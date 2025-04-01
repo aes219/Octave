@@ -1,5 +1,5 @@
 # Octave
-Real-time chat application made with React and Express with the help of Socket.IO
+Real-time chat app made with React and Express
 
 ## Features
 ### Real-time chatting with friends
